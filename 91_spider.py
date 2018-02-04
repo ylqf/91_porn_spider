@@ -44,7 +44,6 @@ while flag<=100:
         tittle=re.findall(r'<div id="viewvideo-title">(.*?)</div>',str(base_req.content,'utf-8',errors='ignore'),re.S)
         img_url=re.findall(r'poster="(.*?)"',str(base_req.content,'utf-8',errors='ignore'))
         t=tittle[0]
-        print(t)
         tittle[0]=format_str(t)
         t=tittle[0]
         if os.path.exists(str(t))==False:
