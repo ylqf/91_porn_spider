@@ -1,2 +1,5 @@
 # 91_porn_spider
-91porn爬虫
+使用方法：
+'''python
+python3 91_spider.py
+'''
