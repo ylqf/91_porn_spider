@@ -43,15 +43,21 @@ while flag<=100:
         video_url=re.findall(r'<source src="(.*?)" type=\'video/mp4\'>',str(base_req.content,'utf-8',errors='ignore'))
         tittle=re.findall(r'<div id="viewvideo-title">(.*?)</div>',str(base_req.content,'utf-8',errors='ignore'),re.S)
         img_url=re.findall(r'poster="(.*?)"',str(base_req.content,'utf-8',errors='ignore'))
-        t=tittle[0]
-        tittle[0]=format_str(t)
-        t=tittle[0]
+        try:
+            t=tittle[0]
+            tittle[0]=format_str(t)
+            t=tittle[0]
+        except IndexError:
+            pass
         if os.path.exists(str(t))==False:
-            os.makedirs(str(t))
-            print('开始下载:'+str(t))
-            download_img(str(img_url[0]),str(t))
-            download_mp4(str(video_url[0]),str(t))
-            print('下载完成')
+            try:
+                os.makedirs(str(t))
+                print('开始下载:'+str(t))
+                download_img(str(img_url[0]),str(t))
+                download_mp4(str(video_url[0]),str(t))
+                print('下载完成')
+            except:
+                pass
         else:
             print('已存在文件夹,跳过')
             time.sleep(2)
