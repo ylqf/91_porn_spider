@@ -1,16 +1,5 @@
 import requests
 import os,re,time,random
-def is_chinese(uchar):
-    if uchar >= u'\u4e00' and uchar <= u'\u9fa5':
-        return True
-    else:
-        return False
-def format_str(content):
-    content_str = ''
-    for i in content:
-        if is_chinese(i):
-            content_str = content_str+i
-    return content_str
 def download_mp4(url,dir):
     headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36Name','Referer':'http://91porn.com'}
     req=requests.get(url=url)
@@ -43,16 +32,21 @@ while flag<=100:
         video_url=re.findall(r'<source src="(.*?)" type=\'video/mp4\'>',str(base_req.content,'utf-8',errors='ignore'))
         tittle=re.findall(r'<div id="viewvideo-title">(.*?)</div>',str(base_req.content,'utf-8',errors='ignore'),re.S)
         img_url=re.findall(r'poster="(.*?)"',str(base_req.content,'utf-8',errors='ignore'))
-        t=tittle[0]
-        print(t)
-        tittle[0]=format_str(t)
-        t=tittle[0]
+        try:
+            t=tittle[0]
+            tittle[0]=t.replace('\n','')
+            t=tittle[0].replace(' ','')
+        except IndexError:
+            pass
         if os.path.exists(str(t))==False:
-            os.makedirs(str(t))
-            print('开始下载:'+str(t))
-            download_img(str(img_url[0]),str(t))
-            download_mp4(str(video_url[0]),str(t))
-            print('下载完成')
+            try:
+                os.makedirs(str(t))
+                print('开始下载:'+str(t))
+                download_img(str(img_url[0]),str(t))
+                download_mp4(str(video_url[0]),str(t))
+                print('下载完成')
+            except:
+                pass
         else:
             print('已存在文件夹,跳过')
             time.sleep(2)
