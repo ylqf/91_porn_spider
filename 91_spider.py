@@ -1,16 +1,5 @@
 import requests
 import os,re,time,random
-def is_chinese(uchar):
-    if uchar >= u'\u4e00' and uchar <= u'\u9fa5':
-        return True
-    else:
-        return False
-def format_str(content):
-    content_str = ''
-    for i in content:
-        if is_chinese(i):
-            content_str = content_str+i
-    return content_str
 def download_mp4(url,dir):
     headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36Name','Referer':'http://91porn.com'}
     req=requests.get(url=url)
@@ -45,8 +34,8 @@ while flag<=100:
         img_url=re.findall(r'poster="(.*?)"',str(base_req.content,'utf-8',errors='ignore'))
         try:
             t=tittle[0]
-            tittle[0]=format_str(t)
-            t=tittle[0]
+            tittle[0]=t.replace('\n','')
+            t=tittle[0].replace(' ','')
         except IndexError:
             pass
         if os.path.exists(str(t))==False:
